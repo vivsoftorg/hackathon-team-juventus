@@ -51,13 +51,21 @@ function App() {
       <br />
       <button onClick={handleSubmit}>Send</button>
       <br />
-      <textarea
-        value={responseText}
+      <div
+        style={{
+          whiteSpace: 'pre-wrap',
+          border: '1px solid #ccc',
+          padding: '10px',
+          margin: '10px 0',
+          minHeight: '100px',
+          borderRadius: '4px',
+          overflowWrap: 'break-word'
+        }}
         readOnly
-        placeholder="Response will be shown here"
-        rows={10}
-        cols={50}
-      />
+        aria-label="Response"
+      >
+        {responseText}
+      </div>
     </div>
   );
 }
