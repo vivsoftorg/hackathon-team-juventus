@@ -1,25 +1,85 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import ListModels from './pages/ListModels/ListModels';
-import Tars from './pages/Tars/Tars';
+import React, { useState } from 'react';
+import axios from 'axios';
+import Button from '../src/components/Button/Button';
 
-const Navbar = () => (
-  <nav>
-    <ul>
-      <li><Link to="/list-models">List Models</Link></li>
-      <li><Link to="/tars">Tars</Link></li>
-    </ul>
-  </nav>
-);
+function App() {
+  const [inputText, setInputText] = useState('');
+  const [responseText, setResponseText] = useState('');
 
-const App = () => (
-  <Router>
-    <Navbar />
-    <Routes>
-      <Route path="/list-models" element={<ListModels />} />
-      <Route path="/tars" element={<Tars />} />
-    </Routes>
-  </Router>
-);
+  const handleInputChange = (event) => {
+    setInputText(event.target.value);
+  };
+
+  // Function to simulate typewriter effect
+  const typewriterEffect = (text, index = 0) => {
+    if (index < text.length) {
+      // Add next character
+      setResponseText(responseText => responseText + text.charAt(index));
+      // Call the same function after some time for the next character
+      setTimeout(() => typewriterEffect(text, index + 1), 50); // Adjust typing speed with timeout duration
+    }
+  }
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.post(process.env.REACT_APP_BACKEND_API_URL, {
+        "i_want": inputText
+      });
+
+      // Clear previous response and start typewriter effect
+      setResponseText('');
+      typewriterEffect(response.data);
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setResponseText(`Error: ${error.message}`);
+    }
+  };
+  
+  const handleSubmit = () => {
+    fetchData();
+    setResponseText(''); // Clear the input after sending
+    
+  };
+
+  return (
+    <div style={{ margin: '20px' }}>
+      <h1>Tars</h1>
+      <textarea
+        value={inputText}
+        onChange={handleInputChange}
+        placeholder="Enter your text here"
+        rows={5}
+        cols={30} // Adjust the number of columns to reduce width
+        style={{
+          border: '1px solid #05A2C2',
+          borderRadius: '8px',
+          padding: '8px',
+          fontSize: '16px',
+          outline: 'none',
+        }}
+      />
+      <br />
+      <Button onClick={handleSubmit}>Send</Button>
+      <br />
+      <div
+        style={{
+          whiteSpace: 'pre-wrap',
+          border: '1px solid #05A2C2',
+          padding: '10px',
+          margin: '10px 0',
+          minHeight: '100px',
+          borderRadius: '4px',
+          overflowWrap: 'break-word',
+          width: '50%',
+        }}
+        readOnly
+        aria-label="Response"
+      >
+        {responseText}
+      </div>
+    </div>
+  );
+}
 
 export default App;
