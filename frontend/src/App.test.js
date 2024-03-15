@@ -5,7 +5,7 @@ test('renders App component without crashing', () => {
   render(<App />);
   
   // Check for specific elements or components that should be rendered
-  const homeLinkElement = screen.getByText(/List Modals/i);
+  const homeLinkElement = screen.getByText(/List Models/i);
   const TarsLinkElement = screen.getByText(/Tars/i);
 
   expect(homeLinkElement).toBeInTheDocument();
