@@ -1,8 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders App component without crashing', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  
+  // Check for specific elements or components that should be rendered
+  const homeLinkElement = screen.getByText(/List Modals/i);
+  const TarsLinkElement = screen.getByText(/Tars/i);
+
+  expect(homeLinkElement).toBeInTheDocument();
+  expect(TarsLinkElement).toBeInTheDocument();
 });
