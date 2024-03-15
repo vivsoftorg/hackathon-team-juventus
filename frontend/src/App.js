@@ -9,15 +9,25 @@ function App() {
     setInputText(event.target.value);
   };
 
+  // Function to simulate typewriter effect
+  const typewriterEffect = (text, index = 0) => {
+    if(index < text.length){
+      // Add next character
+      setResponseText(responseText => responseText + text.charAt(index));
+      // Call the same function after some time for the next character
+      setTimeout(() => typewriterEffect(text, index + 1), 50); // Adjust typing speed with timeout duration
+    }
+  }
+
   const fetchData = async () => {
     try {
       const response = await axios.post(process.env.REACT_APP_BACKEND_API_URL, {
         "i_want": inputText
       });
-      
-      // Assuming the API returns text data directly,
-      // for streaming, this part should be modified according to the actual response type
-      setResponseText(response.data);
+
+      // Clear previous response and start typewriter effect
+      setResponseText('');
+      typewriterEffect(response.data);
 
     } catch (error) {
       console.error('Error fetching data:', error);
