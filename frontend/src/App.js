@@ -9,20 +9,25 @@ function App() {
     setInputText(event.target.value);
   };
 
-  const handleSubmit = async () => {
+  const fetchData = async () => {
     try {
       const response = await axios.post(process.env.REACT_APP_BACKEND_API_URL, {
         "i_want": inputText
       });
+      
+      // Assuming the API returns text data directly,
+      // for streaming, this part should be modified according to the actual response type
       setResponseText(response.data);
-      setInputText(''); // optional: clear the input after sending
+
     } catch (error) {
-      // Handle errors here, if any
-      console.error('An error occurred:', error);
-      setResponseText('Error: Could not retrieve data.');
+      console.error('Error fetching data:', error);
+      setResponseText(`Error: ${error.message}`);
     }
   };
   
+  const handleSubmit = () => {
+    fetchData();
+  };
 
   return (
     <div style={{ margin: '20px' }}>
