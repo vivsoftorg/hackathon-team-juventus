@@ -2,3 +2,4 @@
 bin/
 ollama_models/*
 target/
+**/Notes.md
