@@ -1,0 +1,13 @@
+textarea {
+    border: 1px solid #05A2C2;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 16px;
+    outline: none;
+    width: calc(100% - 75px); /* Adjust the width as needed */
+    margin-right: 8px;
+  }
+  
+  textarea:focus {
+    border-color: #0894B3;
+  }
