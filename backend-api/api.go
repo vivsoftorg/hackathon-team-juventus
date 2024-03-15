@@ -72,18 +72,19 @@ func generateCode(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx := context.Background()
-	completion, err := llms.GenerateFromSinglePrompt(ctx, llm, req.PROMPT, llms.WithTemperature(0.1))
+	log.Printf("Generating code for prompt: %s\n", req.PROMPT)
+	output, err := llms.GenerateFromSinglePrompt(ctx, llm, req.PROMPT, llms.WithTemperature(0.1))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	log.Printf("Generated code: %s\n", output)
 
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
-	_, err = w.Write([]byte(completion))
+	_, err = w.Write([]byte(output))
 	if err != nil {
 		log.Printf("Failed to write response: %v\n", err)
-		// Do not use log.Fatalf which would exit the program, just log the error
 	}
 }
 
