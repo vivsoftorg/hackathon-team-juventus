@@ -1,4 +1,4 @@
-FROM golang:1.21.1-alpine as build
+FROM golang:1.21.3-alpine as build
 
 COPY go.mod go.sum api.go /src/
 WORKDIR /src

@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama:0.1.27
+    container_name: ollama
+    # ports: ["11434:11434"]
+    volumes:
+      - ./ollama_models/:/root/.ollama
+    pull_policy: if_not_present
+    restart: unless-stopped
+
+  backend:
+    container_name: "backend"
+    build:
+      context: backend-api
+      dockerfile: Dockerfile
+    ports: ["8086:8086"]
+    environment:
+      - 'OLLAMA_SERVER=http://ollama:11434'
+      - 'OLLAMA_MODEL=mistral:7b-instruct'
+
+  frontend:
+    container_name: "frontend"
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    ports: ["3000:80"]
+    environment:
+      - 'REACT_APP_BACKEND_API_URL=http://backend:8086/api/generate'
+
+volumes:
+  frontend: {}

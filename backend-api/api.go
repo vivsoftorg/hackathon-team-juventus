@@ -51,7 +51,7 @@ func main() {
 		handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"}),
 	)
 
-	router.HandleFunc("/api/generate", run).Methods("POST", "OPTIONS")
+	router.HandleFunc("/api/generate", generateCode).Methods("POST", "OPTIONS")
 	router.Use(corsHandler)
 
 	log.Printf("Starting server at port %s\n", port)
@@ -96,7 +96,7 @@ func handleOptions(w http.ResponseWriter, r *http.Request) {
 }
 
 // call the LLM and return the response
-func run(w http.ResponseWriter, r *http.Request) {
+func generateCodeStream(w http.ResponseWriter, r *http.Request) {
 	var req Request
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {

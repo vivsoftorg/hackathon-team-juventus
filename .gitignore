@@ -3,3 +3,5 @@
 ollama_models/*
 target/
 **/Notes.md
+ollama_models
+ollama_models/*
