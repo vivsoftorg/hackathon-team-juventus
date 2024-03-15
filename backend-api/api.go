@@ -14,7 +14,7 @@ import (
 )
 
 type Request struct {
-	PROMPT string `json:"i_want"`
+	Input string `json:"i_want"`
 }
 
 var llm *ollama.LLM
@@ -51,7 +51,7 @@ func main() {
 		handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"}),
 	)
 
-	router.HandleFunc("/api/generate", generateCode).Methods("POST", "OPTIONS")
+	router.HandleFunc("/api/generate", run).Methods("POST", "OPTIONS")
 	router.Use(corsHandler)
 
 	log.Printf("Starting server at port %s\n", port)
@@ -72,8 +72,8 @@ func generateCode(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx := context.Background()
-	log.Printf("Generating code for prompt: %s\n", req.PROMPT)
-	output, err := llms.GenerateFromSinglePrompt(ctx, llm, req.PROMPT, llms.WithTemperature(0.1))
+	log.Printf("Generating code for prompt: %s\n", req.Input)
+	output, err := llms.GenerateFromSinglePrompt(ctx, llm, req.Input, llms.WithTemperature(0.1))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -93,4 +93,24 @@ func handleOptions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, X-Requested-With, Authorization, CORRELATION-ID")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.WriteHeader(http.StatusOK)
+}
+
+// call the LLM and return the response
+func run(w http.ResponseWriter, r *http.Request) {
+	var req Request
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	w.Header().Add("mime-type", "text/event-stream")
+	log.Printf("Generating code for prompt: %s\n", req.Input)
+	f := w.(http.Flusher)
+	llm.Call(context.Background(), req.Input,
+		llms.WithStreamingFunc(func(ctx context.Context, chunk []byte) error {
+			w.Write(chunk)
+			f.Flush()
+			return nil
+		}), llms.WithMaxTokens(4096), llms.WithTemperature(0.5))
 }
