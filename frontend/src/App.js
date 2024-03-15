@@ -37,6 +37,7 @@ function App() {
   
   const handleSubmit = () => {
     fetchData();
+    setResponseText(''); // Clear the input after sending
   };
 
   return (
