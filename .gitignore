@@ -1,0 +1,4 @@
+.envrc
+bin/
+ollama_models/*
+target/
