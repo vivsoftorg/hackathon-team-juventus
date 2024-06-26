@@ -1,14 +1,14 @@
 version: '3.8'
 
 services:
-  ollama:
-    image: ollama/ollama:0.1.27
-    container_name: ollama
-    # ports: ["11434:11434"]
-    volumes:
-      - ./ollama_models/:/root/.ollama
-    pull_policy: if_not_present
-    restart: unless-stopped
+  # ollama:
+  #   image: ollama/ollama:0.1.27
+  #   container_name: ollama
+  #   # ports: ["11434:11434"]
+  #   volumes:
+  #     - ./ollama_models/:/root/.ollama
+  #   pull_policy: if_not_present
+  #   restart: unless-stopped
 
   backend:
     container_name: "backend"

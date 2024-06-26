@@ -1,10 +1,19 @@
-# Set up Conda environment
+# How to run
 
-conda deactivate
+get into the devbox shell
 
-conda create -n streamlit_ollama python==3.9 --y
+```
+devbox shell
+which python
+which pip
+```
+Install requirements
 
-conda activate streamlit_ollama
-
+```
 pip install  -r requirements.txt
-/Users/junedm/miniconda3/envs/streamlit_ollama/bin/pip -r requirements.txt
+```
+
+Run the app
+```
+❯ streamlit run app.py
+```
