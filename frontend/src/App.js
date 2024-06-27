@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import TextParser from 'react-text-parser'; 
 import Button from '../src/components/Button/Button';
 
 function App() {
@@ -68,15 +69,18 @@ function App() {
           border: '1px solid #05A2C2',
           padding: '10px',
           margin: '10px 0',
-          minHeight: '100px',
+          height: '100px',
           borderRadius: '4px',
           overflowWrap: 'break-word',
+          overflow: 'auto',
           width: '50%',
         }}
         readOnly
         aria-label="Response"
       >
-        {responseText}
+          <TextParser className="response-text" type="code">
+          {responseText}
+        </TextParser>
       </div>
     </div>
   );

@@ -28,6 +28,15 @@
   color: #61dafb;
 }
 
+/* Styles for the response text */
+.response-text {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 4px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
